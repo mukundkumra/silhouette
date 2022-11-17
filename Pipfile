@@ -8,6 +8,7 @@ opencv-python = "*"
 numpy = "*"
 yml = "*"
 pyyaml = "*"
+pathlib = "*"
 
 [dev-packages]
 
