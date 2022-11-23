@@ -3,6 +3,7 @@ import numpy as np
 import yaml
 from pathlib import Path
 import edge
+from gaussian_blur import gaussian_blur
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -26,6 +27,7 @@ def remove_background(config: dict, image):
 
         # get the contours and their areas
         contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        
         # cont = cv2.contourArea(contours[0])
         contour_info = [(c, cv2.contourArea(c),) for c in contours]
 
@@ -49,7 +51,7 @@ def remove_background(config: dict, image):
         # use dilate, erode, and blur to smooth out the mask
         mask = cv2.dilate(mask, None, iterations=config['dilate_iter'])
         mask = cv2.erode(mask, None, iterations=config['erode_iter'])
-        mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
+        # mask = gaussian_blur(mask, config['blur'])
 
         mask_stack = np.stack([mask, mask, mask])
         mask_stack = np.transpose(mask_stack, axes=(1, 2, 0))
@@ -75,5 +77,5 @@ if __name__ == "__main__":
     config = read_yaml('config.yaml')
     images_dir = Path('images')
     input_path = str(images_dir / 'portrait.jpg')
-    output_path = str(images_dir / 'silhouette.jpg')
+    output_path = str(images_dir / 'silhouette2.jpg')
     process_images(input_path, output_path, remove_background, config)
