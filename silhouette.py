@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 import yaml
 from pathlib import Path
-
+import edge
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -14,11 +14,12 @@ def read_yaml(path: str) -> dict:
 def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
-        # Convert image to grayscale        
+        # Convert image to grayscale    
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         # Apply Canny Edge Dection
-        edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
+        #edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
+        edges = edge.Canny(image_gray, config['canny_low'], config['canny_high'])
 
         edges = cv2.dilate(edges, None)
         edges = cv2.erode(edges, None)
