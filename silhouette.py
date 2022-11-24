@@ -78,3 +78,10 @@ if __name__ == "__main__":
     input_path = str(images_dir / 'portrait.jpg')
     output_path = str(images_dir / 'silhouette.jpg')
     process_images(input_path, output_path, remove_background, config)
+
+def test():
+    config = read_yaml('config.yaml')
+    images_dir = Path('images')
+    input_path = str(images_dir / 'portrait.jpg')
+    output_path = str(images_dir / 'silhouette.jpg')
+    process_images(input_path, output_path, remove_background, config)
