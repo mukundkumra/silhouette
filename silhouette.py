@@ -4,6 +4,7 @@ import yaml
 from pathlib import Path
 import edge
 from gaussian_blur import gaussian_blur
+from contour import find_contours
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -24,10 +25,15 @@ def remove_background(config: dict, image):
 
         edges = cv2.dilate(edges, None)
         edges = cv2.erode(edges, None)
+        cv2.imwrite(str(Path('images') / 'edges.jpg'), edges)
+
+        print(edges)
 
         # get the contours and their areas
-        contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        
+        # contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        contours = find_contours(edges)
+        print(contours)
+
         # cont = cv2.contourArea(contours[0])
         contour_info = [(c, cv2.contourArea(c),) for c in contours]
 
