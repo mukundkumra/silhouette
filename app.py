@@ -32,6 +32,9 @@ def testing():
 
 button = Button(root, text="Silhouette", command=testing)
 
-button.grid(row=5, column=0, columnspan=3)
+button.grid(row=5, column=0, columnspan=2)
+
+exit = Button(root, text="Exit", command=root.quit)
+exit.grid(row=5, column=2)
 
 root.mainloop()
