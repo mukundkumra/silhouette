@@ -16,7 +16,7 @@ def read_yaml(path: str) -> dict:
 def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
-        # Convert image to grayscale    
+        # Convert image to grayscale 
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
         # Apply Canny Edge Dection
@@ -30,9 +30,9 @@ def remove_background(config: dict, image):
         print(edges)
 
         # get the contours and their areas
-        # contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        contours = find_contours(edges)
-        print(contours)
+        contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        # contours = find_contours(edges)
+        # print(contours)
 
         # cont = cv2.contourArea(contours[0])
         contour_info = [(c, cv2.contourArea(c),) for c in contours]
@@ -57,7 +57,7 @@ def remove_background(config: dict, image):
         # use dilate, erode, and blur to smooth out the mask
         mask = cv2.dilate(mask, None, iterations=config['dilate_iter'])
         mask = cv2.erode(mask, None, iterations=config['erode_iter'])
-        # mask = gaussian_blur(mask, config['blur'])
+        # mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
 
         mask_stack = np.stack([mask, mask, mask])
         mask_stack = np.transpose(mask_stack, axes=(1, 2, 0))
@@ -82,6 +82,6 @@ def process_images(input_path: str, output_path: str, process, config: dict) -> 
 if __name__ == "__main__":
     config = read_yaml('config.yaml')
     images_dir = Path('images')
-    input_path = str(images_dir / 'portrait.jpg')
+    input_path = str(images_dir / 'portrait2.jpg')
     output_path = str(images_dir / 'silhouette2.jpg')
     process_images(input_path, output_path, remove_background, config)

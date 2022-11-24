@@ -4,7 +4,6 @@ import numpy as np
 def find_contours(edges):
     found_contours = []
     evaluated_matrix = np.full(edges.shape, False)
-    index = 0
 
     for y in range(0, edges.shape[0]):
         for x in range(0, edges.shape[1]):
