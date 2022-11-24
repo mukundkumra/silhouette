@@ -1,5 +1,4 @@
 import numpy as np
-from pathlib import Path
 
 def Sobel(gray_img):
     shape = gray_img.shape
@@ -43,7 +42,7 @@ def Canny(gray_img, threshold1, threshold2):
                 result[y,x] = sobel[y,x] if (sobel[y-1,x] < sobel[y,x] > sobel[y+1,x]) else 0
 
     # Hysteresis edge tracking
-    ways = [(0,1), (0,-1), (1,0), (-1,0), (1,1), (-1,1), (1,-1), (-1,-1)]    
+    ways = [(0,1), (0,-1), (1,0), (-1,0), (1,1), (-1,1), (1,-1), (-1,-1)]
     edges = np.zeros(shape, dtype=np.uint8)
     checked = np.zeros(shape, dtype=bool)
     stack = []

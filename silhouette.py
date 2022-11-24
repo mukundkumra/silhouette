@@ -3,6 +3,7 @@ import numpy as np
 import yaml
 from pathlib import Path
 import edge
+import morphology as morph
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -21,8 +22,10 @@ def remove_background(config: dict, image):
         #edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
         edges = edge.Canny(image_gray, config['canny_low'], config['canny_high'])
 
-        edges = cv2.dilate(edges, None)
-        edges = cv2.erode(edges, None)
+        #edges = cv2.dilate(edges, None)
+        edges = morph.dilate(edges)
+        #edges = cv2.erode(edges, None)
+        edges = morph.erode(edges)
 
         # get the contours and their areas
         contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
@@ -30,8 +33,8 @@ def remove_background(config: dict, image):
         contour_info = [(c, cv2.contourArea(c),) for c in contours]
 
         # Get the area of the image as a comparison
-        image_area = image.shape[0] * image.shape[1]  
-      
+        image_area = image.shape[0] * image.shape[1]
+
         # calculate max and min areas in terms of pixels
         max_area = config['max_area'] * image_area
         min_area = config['min_area'] * image_area
