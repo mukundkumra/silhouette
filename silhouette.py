@@ -3,6 +3,8 @@ import numpy as np
 import yaml
 from pathlib import Path
 import edge
+from gaussian_blur import gaussian_blur
+from contour import find_contours
 import morphology as morph
 from utils import rgb_to_grayscale
 
@@ -29,7 +31,10 @@ def remove_background(config: dict, image):
         edges = morph.erode(edges)
 
         # get the contours and their areas
-        contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
+        contours = find_contours(edges)
+        # contours = find_contours(edges)
+        # print(contours)
+
         # cont = cv2.contourArea(contours[0])
         contour_info = [(c, cv2.contourArea(c),) for c in contours]
 
@@ -53,7 +58,7 @@ def remove_background(config: dict, image):
         # use dilate, erode, and blur to smooth out the mask
         mask = cv2.dilate(mask, None, iterations=config['dilate_iter'])
         mask = cv2.erode(mask, None, iterations=config['erode_iter'])
-        mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
+        # mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
 
         mask_stack = np.stack([mask, mask, mask])
         mask_stack = np.transpose(mask_stack, axes=(1, 2, 0))

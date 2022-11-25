@@ -1,8 +1,8 @@
-blur: 21
-canny_low: 15
-canny_high: 30
+blur: 15
+canny_low: 10
+canny_high: 20
 min_area: 0.0005
 max_area: 0.95
 dilate_iter: 10
-erode_iter: 10
+erode_iter: 18
 mask_color: [0.0,0.0,0.0]
