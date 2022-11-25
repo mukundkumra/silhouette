@@ -1,37 +1,43 @@
 import numpy as np
 import cv2 as cv
 
-blur_constant = 21
+# blur_constant means mask's width(or height). it can be only odd number
+def blurring(image, blur_constant):
 
-def blurring(image_path):
-    image = cv.imread(image_path)
-
-    mask_size = blur_constant * blur_constant
     half_mask_index = int(blur_constant / 2)
-
     [img_height, img_width, rgb] = np.shape(image)
-    end_height = img_height - half_mask_index
-    end_width = img_width - half_mask_index
 
-    new_image = np.zeros_like(image)
-    for y in range(half_mask_index, end_height):
-        for x in range(half_mask_index, end_width):
-            [total_blue, total_green, total_red] = np.full(3, 0)
+    blurred_image = np.zeros_like(image)
+    for y in range(0, img_height):
+        for x in range(0, img_width):
+            total_bgr = np.full(3, 0)
 
-            for mask_y in range(-half_mask_index, half_mask_index):
-                for mask_x in range(-half_mask_index, half_mask_index):
-                    img_bgr = image[y + mask_y][x + mask_x]
-                    total_blue += img_bgr[0]
-                    total_green += img_bgr[1]
-                    total_red += img_bgr[2]
+            start_y = y - half_mask_index
+            if start_y < 0:
+                start_y = 0
 
-            total_blue /= mask_size
-            total_red /= mask_size
-            total_green /= mask_size
-            new_image[y][x] = [total_blue, total_green, total_red]
+            start_x = x - half_mask_index
+            if start_x < 0:
+                start_x = 0
+
+            end_y = y + half_mask_index
+            if end_y > img_height:
+                end_y = img_height
+
+            end_x = x + half_mask_index
+            if end_x > img_width:
+                end_x = img_width
+
+            sliced_img_size = (end_y - start_y) * (end_x - start_x)
+            sliced_img = image[start_y:end_y, start_x:end_x, :]
+            reshaped_sliced_img = sliced_img.reshape(sliced_img_size, 3)
+
+            total_bgr = np.sum(reshaped_sliced_img, axis=0, keepdims=True)
+            blurred_image[y, x] = (total_bgr / sliced_img_size)
+
 
     cv.imshow('original image', image)
-    cv.imshow('blurred image', new_image)
+    cv.imshow('blurred image', blurred_image)
     cv.waitKey(0)
     cv.destroyAllWindows()
     exit(0)

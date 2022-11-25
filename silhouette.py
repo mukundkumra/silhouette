@@ -87,7 +87,8 @@ if __name__ == "__main__":
     images_dir = Path('images')
     input_path = str(images_dir / 'portrait.jpg')
     output_path = str(images_dir / 'silhouette.jpg')
-    blurring(input_path)
+    image = cv2.imread(input_path)
+    blurring(image, 17)
     #process_images(input_path, output_path, remove_background, config)
 
 def test():
