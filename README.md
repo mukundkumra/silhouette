@@ -13,3 +13,10 @@ How to run project using pipenv:
 `pipenv install`
 
 `pipenv run ./silhouette.py`
+
+How to run project application using pipenv:
+`pip install pipenv`
+
+`pipenv install`
+
+`pipenv run ./app.py`
