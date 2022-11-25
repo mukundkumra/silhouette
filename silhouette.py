@@ -3,6 +3,7 @@ import numpy as np
 import yaml
 from pathlib import Path
 import edge
+from utils import rgb_to_grayscale
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -15,7 +16,7 @@ def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
         # Convert image to grayscale    
-        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        image_gray = rgb_to_grayscale(image)
         
         # Apply Canny Edge Dection
         #edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
