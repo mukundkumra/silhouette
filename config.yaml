@@ -1,6 +1,6 @@
 blur: 15
-canny_low: 55
-canny_high: 65
+canny_low: 35
+canny_high: 45
 min_area: 0.0005
 max_area: 0.95
 dilate_iter: 10

@@ -82,6 +82,6 @@ def process_images(input_path: str, output_path: str, process, config: dict) -> 
 if __name__ == "__main__":
     config = read_yaml('config.yaml')
     images_dir = Path('images')
-    input_path = str(images_dir / 'portrait2.jpg')
-    output_path = str(images_dir / 'silhouette2.jpg')
+    input_path = str(images_dir / 'portrait.jpg')
+    output_path = str(images_dir / 'silhouette4.jpg')
     process_images(input_path, output_path, remove_background, config)

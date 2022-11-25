@@ -31,3 +31,13 @@ def find_consecutive(edges, evaluated_matrix, origin):
             contour_points.append(np.array((x, y)))
         evaluated_matrix[y, x] = True
     return np.array(contour_points), evaluated_matrix
+
+
+def fill_contours(contour, edges):
+    """Should return area as well as filled contour"""
+    for x, y in contour:
+        point = (x+1, y)
+        if point[0] >= edges.shape[1]:
+            continue
+        while edges[point[1], point[0]] == 0:
+            pass
