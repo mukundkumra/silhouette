@@ -4,6 +4,7 @@ import yaml
 from pathlib import Path
 import edge
 import morphology as morph
+from utils import rgb_to_grayscale
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -16,7 +17,7 @@ def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
         # Convert image to grayscale    
-        image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        image_gray = rgb_to_grayscale(image)
         
         # Apply Canny Edge Dection
         #edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
@@ -75,6 +76,13 @@ def process_images(input_path: str, output_path: str, process, config: dict) -> 
 
 
 if __name__ == "__main__":
+    config = read_yaml('config.yaml')
+    images_dir = Path('images')
+    input_path = str(images_dir / 'portrait.jpg')
+    output_path = str(images_dir / 'silhouette.jpg')
+    process_images(input_path, output_path, remove_background, config)
+
+def test():
     config = read_yaml('config.yaml')
     images_dir = Path('images')
     input_path = str(images_dir / 'portrait.jpg')

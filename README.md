@@ -1,4 +1,4 @@
-# Silhuette Manipulation
+# Silhouette Manipulation
 
 Final project for Image Processing
 
