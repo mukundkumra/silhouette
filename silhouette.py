@@ -8,6 +8,8 @@ from contour import find_contours
 import morphology as morph
 from utils import rgb_to_grayscale
 
+from blur import blurring
+
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
         try:
@@ -85,7 +87,8 @@ if __name__ == "__main__":
     images_dir = Path('images')
     input_path = str(images_dir / 'portrait.jpg')
     output_path = str(images_dir / 'silhouette.jpg')
-    process_images(input_path, output_path, remove_background, config)
+    blurring(input_path)
+    #process_images(input_path, output_path, remove_background, config)
 
 def test():
     config = read_yaml('config.yaml')
