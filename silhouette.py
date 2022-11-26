@@ -86,11 +86,11 @@ if __name__ == "__main__":
     config = read_yaml('config.yaml')
     images_dir = Path('images')
     input_path = str(images_dir / 'portrait.jpg')
-    output_path = str(images_dir / 'silhouette.jpg')
+    output_path = str(images_dir / 'blurred_3.jpg')
     image = cv2.imread(input_path)
-    blurring(image, 17)
+    cv2.imwrite(output_path, blurring(image, 3))
     #process_images(input_path, output_path, remove_background, config)
-
+    exit(0)
 def test():
     config = read_yaml('config.yaml')
     images_dir = Path('images')
