@@ -18,19 +18,14 @@ def remove_background(config: dict, image):
 
         # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        
+
         image_gray = cv2.GaussianBlur(image_gray, (5, 5), 0)
         # Apply Canny Edge Dection
         edges = edge.Canny(image_gray, config['canny_low'], config['canny_high'])
-        cv2.imshow('', edges)
-        cv2.waitKey()
 
         edges = morph.dilate(edges)
         edges = morph.erode(edges)
         mask = floodfill.fill_background(edges)
-        
-        cv2.imshow('', mask)
-        cv2.waitKey()
 
         # use dilate, erode, and blur to smooth out the mask
         edges = morph.dilate(edges)
