@@ -61,7 +61,6 @@ def remove_background(config: dict, image):
         mask = cv2.dilate(mask, None, iterations=config['dilate_iter'])
         mask = cv2.erode(mask, None, iterations=config['erode_iter'])
         # mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
-
         mask_stack = np.stack([mask, mask, mask])
         mask_stack = np.transpose(mask_stack, axes=(1, 2, 0))
 
