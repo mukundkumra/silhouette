@@ -4,6 +4,7 @@ import yaml
 from pathlib import Path
 import edge
 import morphology as morph
+import floodfill
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -15,43 +16,25 @@ def read_yaml(path: str) -> dict:
 def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
-        # Convert image to grayscale    
+        # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         
+        image_gray = cv2.GaussianBlur(image_gray, (5, 5), 0)
         # Apply Canny Edge Dection
-        #edges = cv2.Canny(image_gray, config['canny_low'], config['canny_high'])
         edges = edge.Canny(image_gray, config['canny_low'], config['canny_high'])
+        cv2.imshow('', edges)
+        cv2.waitKey()
 
-        #edges = cv2.dilate(edges, None)
         edges = morph.dilate(edges)
-        #edges = cv2.erode(edges, None)
         edges = morph.erode(edges)
-
-        # get the contours and their areas
-        contours, hierarchy  = cv2.findContours(edges, cv2.RETR_LIST, cv2.CHAIN_APPROX_NONE)
-        # cont = cv2.contourArea(contours[0])
-        contour_info = [(c, cv2.contourArea(c),) for c in contours]
-
-        # Get the area of the image as a comparison
-        image_area = image.shape[0] * image.shape[1]
-
-        # calculate max and min areas in terms of pixels
-        max_area = config['max_area'] * image_area
-        min_area = config['min_area'] * image_area
-
-        # Set up mask with a matrix of 0's
-        mask = np.zeros(edges.shape, dtype = np.uint8)
-
-        # Go through and find relevant contours and apply to mask
-        for contour in contour_info:
-            # Instead of worrying about all the smaller contours, if the area is smaller than the min, the loop will break
-            if contour[1] > min_area and contour[1] < max_area:
-                # Add contour to mask
-                mask = cv2.fillConvexPoly(mask, contour[0], (255))
+        mask = floodfill.fill_background(edges)
         
+        cv2.imshow('', mask)
+        cv2.waitKey()
+
         # use dilate, erode, and blur to smooth out the mask
-        mask = cv2.dilate(mask, None, iterations=config['dilate_iter'])
-        mask = cv2.erode(mask, None, iterations=config['erode_iter'])
+        edges = morph.dilate(edges)
+        edges = morph.erode(edges)
         mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
 
         mask_stack = np.stack([mask, mask, mask])
