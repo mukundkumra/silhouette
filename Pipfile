@@ -9,6 +9,8 @@ numpy = "*"
 yml = "*"
 pyyaml = "*"
 pathlib = "*"
+tk = "*"
+pillow = "*"
 
 [dev-packages]
 
