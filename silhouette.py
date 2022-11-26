@@ -4,11 +4,9 @@ import yaml
 from pathlib import Path
 import edge
 import morphology as morph
-<<<<<<< HEAD
 import floodfill
-=======
-from utils import rgb_to_grayscale
->>>>>>> d14fb1db6d1080d5aa7831b5bbbff6deed8b0ff9
+import blur
+#from utils import rgb_to_grayscale
 
 def read_yaml(path: str) -> dict:
     with open(path, "r") as stream:
@@ -20,16 +18,14 @@ def read_yaml(path: str) -> dict:
 def remove_background(config: dict, image):
         # Taken from https://towardsdatascience.com/background-removal-with-python-b61671d1508a
 
-<<<<<<< HEAD
         # Convert image to grayscale
         image_gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-        image_gray = cv2.GaussianBlur(image_gray, (5, 5), 0)
-=======
+        blurred_image = blur.blurring(image_gray, config['blur'])
+
         # Convert image to grayscale    
-        image_gray = rgb_to_grayscale(image)
-        
->>>>>>> d14fb1db6d1080d5aa7831b5bbbff6deed8b0ff9
+        #image_gray = rgb_to_grayscale(image)
+
         # Apply Canny Edge Dection
         edges = edge.Canny(image_gray, config['canny_low'], config['canny_high'])
 
@@ -40,7 +36,7 @@ def remove_background(config: dict, image):
         # use dilate, erode, and blur to smooth out the mask
         edges = morph.dilate(edges)
         edges = morph.erode(edges)
-        mask = cv2.GaussianBlur(mask, (config['blur'], config['blur']), 0)
+        mask = blur.blurring(mask, config['blur'])
 
         mask_stack = np.stack([mask, mask, mask])
         mask_stack = np.transpose(mask_stack, axes=(1, 2, 0))
