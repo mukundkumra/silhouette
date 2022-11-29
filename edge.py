@@ -1,5 +1,6 @@
 import numpy as np
 
+# sobel edge detection
 def Sobel(gray_img):
     shape = gray_img.shape
     
@@ -17,6 +18,7 @@ def Sobel(gray_img):
     theta = np.arctan2(gy,gx) / np.pi * 180
     return result, theta
 
+# canny edge detection
 def Canny(gray_img, threshold1, threshold2):
     shape = gray_img.shape
     sobel, theta = Sobel(gray_img)
