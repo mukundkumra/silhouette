@@ -1,6 +1,6 @@
 # Silhouette Manipulation
 
-Final project for Image Processing
+Applies algorithm to provided image which generates a replica with the background set to the color black.
 
 How to run project:
 `pip install -r requirements.txt`
@@ -20,3 +20,11 @@ How to run project application using pipenv:
 `pipenv install`
 
 `pipenv run ./app.py`
+
+## Example
+
+### Portrait
+![Portrait](./images/portrait.jpg)
+
+### Silhouette
+![Silouette](./images/silhouette.jpg)
